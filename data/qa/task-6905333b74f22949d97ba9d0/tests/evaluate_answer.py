@@ -155,6 +155,8 @@ def evaluate_single_rubric(client, model, system_prompt, user_prompt_template,
             status_score = _score_from_status(_normalize_status(parsed.get("status"))) if parsed else None
             parsed_score = _normalize_score(parsed.get("score")) if parsed else None
             if parsed and (status_score in {"0", "1"} or parsed_score in {"0", "1"}):
+                # The criterion is trusted input; do not rely on a generated echo.
+                parsed["rubric_statement"] = title
                 parsed["rubric_id"] = rubric["id"]
                 return parsed
             print(f"  Retry {attempt+1}/{MAX_RETRIES}: invalid response for rubric {rubric['id']}", file=sys.stderr)

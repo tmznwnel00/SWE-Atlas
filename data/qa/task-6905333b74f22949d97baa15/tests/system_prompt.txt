@@ -8,20 +8,20 @@ The rubric criteria to rate are in the following format (actual rubric object pr
 [
 {
   "id": "<placeholder_id>",
-  "rubric_statement": "<placeholder_behavior>",
+  "rubric_statement": "<placeholder_behavior>"
 },
 {
   "id": "<placeholder_id>",
-  "rubric_statement": "<placeholder_behavior>",
+  "rubric_statement": "<placeholder_behavior>"
 }
 ]
 ```
 
 ## Rating Object
 
-Return a JSON object containing a nested object with the key "ratings". The "ratings" key contains an array where each item is an object with the following fields: "rubric_statement", "status", "score", and "justification".
+Return a JSON object containing a nested object with the key "ratings". The "ratings" key contains an array where each item is an object with the following fields: "status", "score", and "justification". Return only the JSON object and use valid JSON string escaping.
 
-- The "rubric_statement" field should match the "rubric_statement" of the original criterion object exactly as provided.
+- Do not repeat the input "rubric_statement" in the rating object. Evaluate the provided criterion and return only its "status", "score", and "justification".
 - The "status" field must be either "YES" or "NO".
 - The "score" field must be either "1" (YES) or "0" (NO), indicating whether the response meets the criteria of the rubric item. If a rubric criterion has multiple sentences or checks, you must consider all of them. If any of the checks is not met, the answer should be "0". Only return "1" if all of the checks are met.
 - The "justification" field must be a string explaining why the response does or does not meet the criteria of the rubric item.
@@ -50,17 +50,16 @@ Return a JSON object containing a nested object with the key "ratings". The "rat
 
 ## Final Instructions
 
-- Make sure to use each criterion `rubric_statement` **exactly** as provided.
+- Evaluate each criterion `rubric_statement` **exactly** as provided; do not copy it into the output.
 - **Evaluate each criterion independently**: Each criterion receives its own YES/NO based solely on whether the described behavior is present in the response.
 
-Return your rating response using the below JSON schema:
+Return your rating response in the following JSON form. Replace each placeholder with one allowed value; do not output the placeholders themselves:
 ```json
 {
   "ratings": [
     {
-      "rubric_statement": "...",
-      "status": "YES" or "NO",
-      "score": "1" or "0",
+      "status": "<YES or NO>",
+      "score": "<1 or 0>",
       "justification": "..."
     }
   ]
